@@ -1,0 +1,10 @@
+dist/
+*.exe
+*.test
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate*
+crash.log
+*.tfvars
+bin/
+terraform-provider-fireweave
