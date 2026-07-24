@@ -117,6 +117,32 @@ These steps are **manual** (require org admin access):
 
    The `release` workflow runs GoReleaser, signs the checksums, and creates a GitHub Release. The Registry picks it up automatically once registered.
 
+
+## One remaining step (Terraform Registry)
+
+GitHub release **v0.1.0** is published with GPG-signed checksums. Actions secrets `GPG_PRIVATE_KEY` + `PASSPHRASE` are configured.
+
+Register the provider (requires HashiCorp account with access to the FireWeave-HQ GitHub org):
+
+1. Open https://registry.terraform.io/publish/provider and sign in with GitHub (org: **FireWeave-HQ**)
+2. Select `terraform-provider-fireweave`
+3. Paste the public key from [`.release/gpg-public.asc`](.release/gpg-public.asc)
+4. Fingerprint: `22D75718E471A28B5EAB9E3139D1567099DBF1DA`
+5. After registration, the Registry will ingest `v0.1.0` automatically
+
+Then consumers can use:
+
+```hcl
+terraform {
+  required_providers {
+    fireweave = {
+      source  = "FireWeave-HQ/fireweave"
+      version = "0.1.0"
+    }
+  }
+}
+```
+
 ## License
 
 MPL-2.0
