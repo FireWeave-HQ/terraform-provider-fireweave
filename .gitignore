@@ -8,3 +8,6 @@ crash.log
 *.tfvars
 bin/
 terraform-provider-fireweave
+
+# Local-only GPG operator secrets (never commit)
+.release/gpg-passphrase.local
