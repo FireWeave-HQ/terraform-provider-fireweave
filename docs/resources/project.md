@@ -7,36 +7,41 @@ description: |-
 
 # fireweave_project (Resource)
 
-Manages a FireWeave project.
+Manages a FireWeave project within the authenticated organisation.
+
+A project is the top-level container for environments, integrations, and rollouts.
 
 ## Example Usage
 
 ```terraform
-resource "fireweave_project" "demo" {
-  name        = "Demo Project"
-  slug        = "demo-project"
-  description = "Managed by Terraform"
+resource "fireweave_project" "app" {
+  name        = "Payments Service"
+  slug        = "payments"
+  description = "Checkout and billing services"
+  status      = "active"
 }
 ```
 
-## Schema
+## Argument Reference
 
 ### Required
 
 - `name` (String) Human-readable project name.
-- `slug` (String) URL-safe project slug (unique within the organisation). Forces replacement.
+- `slug` (String) URL-safe slug, unique within the organisation. Changing this forces a new resource.
 
 ### Optional
 
-- `description` (String) Optional project description.
-- `status` (String) Project status: `active` or `archived`.
+- `description` (String) Longer description of the project.
+- `status` (String) Lifecycle status. One of `active` or `archived`. Defaults to `active`.
 
 ### Read-Only
 
-- `id` (String) Project identifier.
+- `id` (String) Project identifier assigned by FireWeave.
 
 ## Import
 
+Import by project id:
+
 ```shell
-terraform import fireweave_project.demo <project_id>
+terraform import fireweave_project.app 01234567-89ab-cdef-0123-456789abcdef
 ```

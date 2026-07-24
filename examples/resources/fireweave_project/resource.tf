@@ -1,18 +1,28 @@
 terraform {
+  required_version = ">= 1.5.0"
+
   required_providers {
     fireweave = {
-      source = "FireWeave-HQ/fireweave"
+      source  = "FireWeave-HQ/fireweave"
+      version = "~> 0.1"
     }
   }
 }
 
 provider "fireweave" {
-  # endpoint = "https://app-server.fireweave.ai" # optional
-  # api_key  = var.fireweave_api_key            # or FIREWEAVE_API_KEY
+  # Configure via environment variables:
+  #   FIREWEAVE_API_KEY      (required)
+  #   FIREWEAVE_ENDPOINT     (optional)
 }
 
 resource "fireweave_project" "demo" {
   name        = "Demo Project"
   slug        = "demo-project"
   description = "Managed by Terraform"
+  status      = "active"
+}
+
+output "project_id" {
+  description = "FireWeave project identifier"
+  value       = fireweave_project.demo.id
 }

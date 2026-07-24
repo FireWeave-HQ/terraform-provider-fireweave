@@ -1,37 +1,34 @@
 # Terraform Provider for FireWeave
 
-Manage FireWeave **projects** and **environments** with Terraform.
+[![Terraform Registry](https://img.shields.io/badge/terraform-registry-623CE4?logo=terraform&logoColor=white)](https://registry.terraform.io/providers/FireWeave-HQ/fireweave/latest)
+[![GitHub release](https://img.shields.io/github/v/release/FireWeave-HQ/terraform-provider-fireweave)](https://github.com/FireWeave-HQ/terraform-provider-fireweave/releases)
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](./LICENSE)
 
-Published as `FireWeave-HQ/fireweave` on the [Terraform Registry](https://registry.terraform.io/).
+Manage [FireWeave](https://fireweave.ai) projects and environments as code.
+
+**Registry:** [`FireWeave-HQ/fireweave`](https://registry.terraform.io/providers/FireWeave-HQ/fireweave/latest)
 
 ## Requirements
 
-- [Terraform](https://developer.hashicorp.com/terraform/downloads) >= 1.5
-- A FireWeave org API key (`fw_org_…`), minted via:
+| Tool | Version |
+|------|---------|
+| [Terraform](https://developer.hashicorp.com/terraform/downloads) | >= 1.5 |
+| FireWeave org API key | `fw_org_…` (see [Authentication](#authentication)) |
 
-```http
-POST /api/organizations/:orgId/api-keys
-Authorization: <session cookie>
-{ "name": "terraform" }
-```
-
-The feature is flag-gated (`org-api-keys-v1-management`) on the FireWeave server.
-
-## Example
+## Quick start
 
 ```hcl
 terraform {
   required_providers {
     fireweave = {
       source  = "FireWeave-HQ/fireweave"
-      version = ">= 0.1.0"
+      version = "~> 0.1"
     }
   }
 }
 
 provider "fireweave" {
-  # endpoint = "https://app-server.fireweave.ai"
-  # api_key  = "fw_org_…"   # or FIREWEAVE_API_KEY
+  # Prefer FIREWEAVE_API_KEY in the environment over hardcoding.
 }
 
 resource "fireweave_project" "app" {
@@ -47,102 +44,102 @@ resource "fireweave_environment" "stage" {
   is_default   = true
 
   branch_rules = [
-    { kind = "exact", value = "main" }
+    {
+      kind  = "exact"
+      value = "main"
+    },
   ]
 }
 ```
 
-## Provider configuration
+```bash
+export FIREWEAVE_API_KEY="fw_org_…"
+terraform init
+terraform apply
+```
 
-| Argument   | Env var             | Default                           |
-|------------|---------------------|-----------------------------------|
-| `endpoint` | `FIREWEAVE_ENDPOINT`| `https://app-server.fireweave.ai` |
-| `api_key`  | `FIREWEAVE_API_KEY` | _(required)_                      |
+## Authentication
+
+The provider authenticates with an **org-scoped API key** (`fw_org_…`).
+
+| Setting | Environment variable | Default |
+|---------|----------------------|---------|
+| `api_key` (sensitive) | `FIREWEAVE_API_KEY` | _(required)_ |
+| `endpoint` | `FIREWEAVE_ENDPOINT` | `https://app-server.fireweave.ai` |
+
+### Creating an API key
+
+1. Sign in to the FireWeave app for your organisation.
+2. Create a key with a session-authenticated request:
+
+```http
+POST /api/organizations/{orgId}/api-keys
+Content-Type: application/json
+
+{ "name": "terraform" }
+```
+
+3. Store the returned `key` value once — it is shown only at creation time.
+4. Export it as `FIREWEAVE_API_KEY` (or pass `api_key` in the provider block).
+
+> Org API key management is enabled when the FireWeave `org-api-keys-v1-management` feature flag is on for your organisation.
 
 ## Resources
 
-- `fireweave_project` — create/update/delete/import by project id
-- `fireweave_environment` — create/update/delete/import as `project_id/env_id`
+| Resource | Description |
+|----------|-------------|
+| [`fireweave_project`](docs/resources/project.md) | A FireWeave project |
+| [`fireweave_environment`](docs/resources/environment.md) | A deploy environment (promotion stage) in a project |
+
+### Import
+
+```bash
+terraform import fireweave_project.app <project_id>
+terraform import fireweave_environment.stage <project_id>/<env_id>
+```
 
 ## Data sources
 
-- `fireweave_project` — lookup by `id` or `slug`
-- `fireweave_projects` — list all projects in the org
-- `fireweave_environments` — list environments for a `project_id`
+| Data source | Description |
+|-------------|-------------|
+| [`fireweave_project`](docs/data-sources/project.md) | Look up one project by `id` or `slug` |
+| [`fireweave_projects`](docs/data-sources/projects.md) | List all projects in the organisation |
+| [`fireweave_environments`](docs/data-sources/environments.md) | List environments for a project |
 
-## Local development
+## Documentation
+
+- [Terraform Registry docs](https://registry.terraform.io/providers/FireWeave-HQ/fireweave/latest/docs)
+- [Examples](./examples)
+
+## Developing the provider
 
 ```bash
-go build -o terraform-provider-fireweave
-# optional: terraform acceptance tests against a local fw-server
+git clone https://github.com/FireWeave-HQ/terraform-provider-fireweave.git
+cd terraform-provider-fireweave
+go test ./...
+go build -o terraform-provider-fireweave .
+```
+
+Acceptance tests (requires a running FireWeave API and a test key):
+
+```bash
 export TF_ACC=1
 export FIREWEAVE_ENDPOINT=http://localhost:3001
 export FIREWEAVE_API_KEY=fw_org_…
-go test ./internal/provider -v -timeout 30m
+make testacc
 ```
 
-## Publishing to the Terraform Registry
+### Cutting a release
 
-These steps are **manual** (require org admin access):
+Maintainers: tag a semver release (`vX.Y.Z`). The GitHub Actions `release` workflow builds multi-platform binaries with GoReleaser, signs `SHA256SUMS` with the repo GPG key, and publishes a GitHub Release. The Terraform Registry picks up new versions automatically.
 
-1. **Create the public GitHub repo**  
-   `FireWeave-HQ/terraform-provider-fireweave` (name must match `terraform-provider-<NAME>`).
+Signing material for operators lives under [`.release/`](./.release).
 
-2. **Push this codebase** to that repo (`main` branch).
+## Support
 
-3. **Generate a GPG signing key** for releases and export the private key:
-
-   ```bash
-   gpg --full-generate-key
-   gpg --armor --export-secret-keys <KEY_ID>
-   ```
-
-4. **Add GitHub Actions secrets** on the repo:
-   - `GPG_PRIVATE_KEY` — armored private key
-   - `PASSPHRASE` — key passphrase
-
-5. **Publish the GPG public key** to a keyserver (e.g. `keys.openpgp.org`) and note the fingerprint.
-
-6. **Register the provider** at [registry.terraform.io](https://registry.terraform.io/publish/provider):
-   - Sign in with the FireWeave-HQ GitHub org
-   - Select `terraform-provider-fireweave`
-   - Paste the GPG public key / fingerprint
-
-7. **Cut a release tag**:
-
-   ```bash
-   git tag v0.1.0
-   git push origin v0.1.0
-   ```
-
-   The `release` workflow runs GoReleaser, signs the checksums, and creates a GitHub Release. The Registry picks it up automatically once registered.
-
-
-## One remaining step (Terraform Registry)
-
-GitHub release **v0.1.0** is published with GPG-signed checksums. Actions secrets `GPG_PRIVATE_KEY` + `PASSPHRASE` are configured.
-
-Register the provider (requires HashiCorp account with access to the FireWeave-HQ GitHub org):
-
-1. Open https://registry.terraform.io/publish/provider and sign in with GitHub (org: **FireWeave-HQ**)
-2. Select `terraform-provider-fireweave`
-3. Paste the public key from [`.release/gpg-public.asc`](.release/gpg-public.asc)
-4. Fingerprint: `22D75718E471A28B5EAB9E3139D1567099DBF1DA`
-5. After registration, the Registry will ingest `v0.1.0` automatically
-
-Then consumers can use:
-
-```hcl
-terraform {
-  required_providers {
-    fireweave = {
-      source  = "FireWeave-HQ/fireweave"
-      version = "0.1.0"
-    }
-  }
-}
-```
+- Issues: [GitHub Issues](https://github.com/FireWeave-HQ/terraform-provider-fireweave/issues)
+- FireWeave product: [fireweave.ai](https://fireweave.ai)
 
 ## License
 
-MPL-2.0
+[Mozilla Public License 2.0](./LICENSE)
