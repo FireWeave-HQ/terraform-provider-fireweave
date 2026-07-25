@@ -80,3 +80,74 @@ func TestCreateAndGetProject(t *testing.T) {
 		t.Fatalf("got slug %s", got.Slug)
 	}
 }
+
+func TestSetAndGetOrgMemberRole(t *testing.T) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/api/organizations/org1/members/user1/role", func(w http.ResponseWriter, r *http.Request) {
+		if r.Header.Get("Authorization") != "Bearer fw_org_test" {
+			t.Fatalf("missing auth header")
+		}
+		if r.Method != http.MethodPut {
+			t.Fatalf("method %s", r.Method)
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"success": true,
+			"data": map[string]any{
+				"memberId": "m1",
+				"userId":   "user1",
+				"role":     "admin",
+			},
+		})
+	})
+	mux.HandleFunc("/api/organizations/org1/members", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("method %s", r.Method)
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"success": true,
+			"data": []map[string]any{
+				{
+					"id":        "m1",
+					"userId":    "user1",
+					"name":      "Ada",
+					"email":     "ada@example.com",
+					"role":      "admin",
+					"createdAt": "2026-01-01T00:00:00Z",
+				},
+			},
+		})
+	})
+	mux.HandleFunc("/api/organizations/org1/members/user1", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodDelete {
+			t.Fatalf("method %s", r.Method)
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"success": true,
+			"data":    nil,
+		})
+	})
+
+	srv := httptest.NewServer(mux)
+	defer srv.Close()
+
+	c := client.New(srv.URL, "fw_org_test")
+	set, err := c.SetOrgMemberRole(context.Background(), "org1", "user1", client.SetOrgMemberRoleInput{Role: "admin"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if set.MemberID != "m1" || set.Role != "admin" {
+		t.Fatalf("unexpected set result: %+v", set)
+	}
+
+	got, err := c.GetOrgMember(context.Background(), "org1", "user1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got.Role != "admin" || got.ID != "m1" {
+		t.Fatalf("unexpected member: %+v", got)
+	}
+
+	if err := c.RemoveOrgMember(context.Background(), "org1", "user1"); err != nil {
+		t.Fatal(err)
+	}
+}

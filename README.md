@@ -90,12 +90,14 @@ Content-Type: application/json
 |----------|-------------|
 | [`fireweave_project`](docs/resources/project.md) | A FireWeave project |
 | [`fireweave_environment`](docs/resources/environment.md) | A deploy environment (promotion stage) in a project |
+| [`fireweave_org_member`](docs/resources/org_member.md) | Organisation member role assignment and removal |
 
 ### Import
 
 ```bash
 terraform import fireweave_project.app <project_id>
 terraform import fireweave_environment.stage <project_id>/<env_id>
+terraform import fireweave_org_member.alice <organization_id>/<user_id>
 ```
 
 ## Data sources

@@ -262,6 +262,69 @@ func (c *Client) DeleteEnvironment(ctx context.Context, projectID, envID string)
 	return c.do(ctx, http.MethodDelete, path, nil, nil)
 }
 
+// --- Org members -------------------------------------------------------------
+
+// OrgMember is a membership row returned by the organizations members API.
+type OrgMember struct {
+	ID        string  `json:"id"`
+	UserID    string  `json:"userId"`
+	Name      *string `json:"name"`
+	Email     *string `json:"email"`
+	Role      string  `json:"role"`
+	CreatedAt string  `json:"createdAt"`
+}
+
+type orgAPISuccess[T any] struct {
+	Success bool `json:"success"`
+	Data    T    `json:"data"`
+}
+
+type SetOrgMemberRoleInput struct {
+	Role string `json:"role"`
+}
+
+type SetOrgMemberRoleResult struct {
+	MemberID string `json:"memberId"`
+	UserID   string `json:"userId"`
+	Role     string `json:"role"`
+}
+
+func (c *Client) ListOrgMembers(ctx context.Context, orgID string) ([]OrgMember, error) {
+	var out orgAPISuccess[[]OrgMember]
+	path := fmt.Sprintf("/api/organizations/%s/members", orgID)
+	if err := c.do(ctx, http.MethodGet, path, nil, &out); err != nil {
+		return nil, err
+	}
+	return out.Data, nil
+}
+
+func (c *Client) GetOrgMember(ctx context.Context, orgID, userID string) (*OrgMember, error) {
+	members, err := c.ListOrgMembers(ctx, orgID)
+	if err != nil {
+		return nil, err
+	}
+	for i := range members {
+		if members[i].UserID == userID {
+			return &members[i], nil
+		}
+	}
+	return nil, &APIError{StatusCode: http.StatusNotFound, Body: "member not found in organization"}
+}
+
+func (c *Client) SetOrgMemberRole(ctx context.Context, orgID, userID string, in SetOrgMemberRoleInput) (*SetOrgMemberRoleResult, error) {
+	var out orgAPISuccess[SetOrgMemberRoleResult]
+	path := fmt.Sprintf("/api/organizations/%s/members/%s/role", orgID, userID)
+	if err := c.do(ctx, http.MethodPut, path, in, &out); err != nil {
+		return nil, err
+	}
+	return &out.Data, nil
+}
+
+func (c *Client) RemoveOrgMember(ctx context.Context, orgID, userID string) error {
+	path := fmt.Sprintf("/api/organizations/%s/members/%s", orgID, userID)
+	return c.do(ctx, http.MethodDelete, path, nil, nil)
+}
+
 // IsNotFound reports whether err is an HTTP 404 from the FireWeave API.
 func IsNotFound(err error) bool {
 	if apiErr, ok := err.(*APIError); ok {
