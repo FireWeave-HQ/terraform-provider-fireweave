@@ -92,6 +92,7 @@ func (p *FireweaveProvider) Resources(_ context.Context) []func() resource.Resou
 	return []func() resource.Resource{
 		NewProjectResource,
 		NewEnvironmentResource,
+		NewOrgMemberResource,
 	}
 }
 

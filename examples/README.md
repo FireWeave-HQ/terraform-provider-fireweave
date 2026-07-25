@@ -6,6 +6,7 @@ Runnable samples for the FireWeave Terraform provider.
 |------|-------------|
 | [`resources/fireweave_project`](./resources/fireweave_project) | Create a project |
 | [`resources/fireweave_environment`](./resources/fireweave_environment) | Project + stage/prod environments |
+| [`resources/fireweave_org_member`](./resources/fireweave_org_member) | Assign / remove an org member role |
 | [`data-sources`](./data-sources) | Look up projects and environments |
 
 ## Running an example
