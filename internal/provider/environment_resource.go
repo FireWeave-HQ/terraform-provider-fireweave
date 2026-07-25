@@ -273,29 +273,30 @@ func setEnvironmentModel(ctx context.Context, m *EnvironmentResourceModel, e *cl
 	return diags
 }
 
+type refRuleModel struct {
+	Kind  types.String `tfsdk:"kind"`
+	Value types.String `tfsdk:"value"`
+	Repo  types.String `tfsdk:"repo"`
+}
+
 func listToRefRules(ctx context.Context, list types.List) ([]client.RefRule, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	if list.IsNull() || list.IsUnknown() {
 		return nil, diags
 	}
-	var elems []attr.Value
+	var elems []refRuleModel
 	diags.Append(list.ElementsAs(ctx, &elems, false)...)
 	if diags.HasError() {
 		return nil, diags
 	}
 	out := make([]client.RefRule, 0, len(elems))
 	for _, elem := range elems {
-		obj, ok := elem.(types.Object)
-		if !ok {
-			continue
-		}
-		attrs := obj.Attributes()
 		rule := client.RefRule{
-			Kind:  attrs["kind"].(types.String).ValueString(),
-			Value: attrs["value"].(types.String).ValueString(),
+			Kind:  elem.Kind.ValueString(),
+			Value: elem.Value.ValueString(),
 		}
-		if repo, ok := attrs["repo"].(types.String); ok && !repo.IsNull() && !repo.IsUnknown() {
-			v := repo.ValueString()
+		if !elem.Repo.IsNull() && !elem.Repo.IsUnknown() {
+			v := elem.Repo.ValueString()
 			rule.Repo = &v
 		}
 		out = append(out, rule)
@@ -304,12 +305,14 @@ func listToRefRules(ctx context.Context, list types.List) ([]client.RefRule, dia
 }
 
 func refRulesToList(ctx context.Context, rules []client.RefRule) (types.List, diag.Diagnostics) {
+	_ = ctx
 	attrTypes := map[string]attr.Type{
 		"kind":  types.StringType,
 		"value": types.StringType,
 		"repo":  types.StringType,
 	}
-	if rules == nil {
+	// Normalize empty to null so omitted optional attrs stay consistent after apply.
+	if len(rules) == 0 {
 		return types.ListNull(types.ObjectType{AttrTypes: attrTypes}), nil
 	}
 	elems := make([]attr.Value, 0, len(rules))
@@ -343,7 +346,8 @@ func listToStrings(ctx context.Context, list types.List) ([]string, diag.Diagnos
 
 func stringsToList(ctx context.Context, values []string) (types.List, diag.Diagnostics) {
 	_ = ctx
-	if values == nil {
+	// Normalize empty to null so omitted optional attrs stay consistent after apply.
+	if len(values) == 0 {
 		return types.ListNull(types.StringType), nil
 	}
 	elems := make([]attr.Value, 0, len(values))
