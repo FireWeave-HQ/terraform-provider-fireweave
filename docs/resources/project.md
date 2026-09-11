@@ -2,12 +2,12 @@
 page_title: "fireweave_project Resource - fireweave"
 subcategory: ""
 description: |-
-  Manages a FireWeave project.
+  Manages a Fireweave project.
 ---
 
 # fireweave_project (Resource)
 
-Manages a FireWeave project within the authenticated organisation.
+Manages a Fireweave project within the authenticated organisation.
 
 A project is the top-level container for environments, integrations, and rollouts.
 
@@ -36,7 +36,7 @@ resource "fireweave_project" "app" {
 
 ### Read-Only
 
-- `id` (String) Project identifier assigned by FireWeave.
+- `id` (String) Project identifier assigned by Fireweave.
 
 ## Import
 

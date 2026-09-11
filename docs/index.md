@@ -1,12 +1,12 @@
 ---
-page_title: "FireWeave Provider"
+page_title: "Fireweave Provider"
 description: |-
-  The FireWeave provider manages projects and environments in FireWeave via org-scoped API keys.
+  The Fireweave provider manages projects and environments in Fireweave via org-scoped API keys.
 ---
 
-# FireWeave Provider
+# Fireweave Provider
 
-The FireWeave provider lets you manage [FireWeave](https://fireweave.ai) **projects** and **environments** with Terraform.
+The Fireweave provider lets you manage [Fireweave](https://fireweave.ai) **projects** and **environments** with Terraform.
 
 Use it to define promotion pipelines (for example `dev` → `stage` → `prod`) as code, keep environment branch/tag rules in sync across teams, and import existing projects into Terraform state.
 
@@ -54,7 +54,7 @@ Authenticate with an org-scoped API key (`fw_org_…`). Prefer the `FIREWEAVE_AP
 
 ### Creating an API key
 
-1. Sign in to FireWeave for the target organisation.
+1. Sign in to Fireweave for the target organisation.
 2. Call:
 
 ```http
@@ -66,11 +66,11 @@ Content-Type: application/json
 
 3. Persist the returned `key` securely. It is only returned once.
 
-Org API key management requires the FireWeave `org-api-keys-v1-management` feature to be enabled for the organisation.
+Org API key management requires the Fireweave `org-api-keys-v1-management` feature to be enabled for the organisation.
 
 ## Schema
 
 ### Optional
 
-- `api_key` (String, Sensitive) Org-scoped FireWeave API key (`fw_org_…`). Defaults to the `FIREWEAVE_API_KEY` environment variable.
-- `endpoint` (String) FireWeave API base URL. Defaults to `https://app-server.fireweave.ai`, or `FIREWEAVE_ENDPOINT` when set.
+- `api_key` (String, Sensitive) Org-scoped Fireweave API key (`fw_org_…`). Defaults to the `FIREWEAVE_API_KEY` environment variable.
+- `endpoint` (String) Fireweave API base URL. Defaults to `https://app-server.fireweave.ai`, or `FIREWEAVE_ENDPOINT` when set.

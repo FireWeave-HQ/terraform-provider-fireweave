@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-// Client is a thin HTTP client for FireWeave's bearer-auth /v1 management plane.
+// Client is a thin HTTP client for Fireweave's bearer-auth /v1 management plane.
 type Client struct {
 	endpoint   string
 	apiKey     string
@@ -325,7 +325,7 @@ func (c *Client) RemoveOrgMember(ctx context.Context, orgID, userID string) erro
 	return c.do(ctx, http.MethodDelete, path, nil, nil)
 }
 
-// IsNotFound reports whether err is an HTTP 404 from the FireWeave API.
+// IsNotFound reports whether err is an HTTP 404 from the Fireweave API.
 func IsNotFound(err error) bool {
 	if apiErr, ok := err.(*APIError); ok {
 		return apiErr.StatusCode == http.StatusNotFound

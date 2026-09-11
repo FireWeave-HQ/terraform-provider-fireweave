@@ -23,6 +23,6 @@ resource "fireweave_project" "demo" {
 }
 
 output "project_id" {
-  description = "FireWeave project identifier"
+  description = "Fireweave project identifier"
   value       = fireweave_project.demo.id
 }

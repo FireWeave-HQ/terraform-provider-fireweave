@@ -1,6 +1,6 @@
 # Examples
 
-Runnable samples for the FireWeave Terraform provider.
+Runnable samples for the Fireweave Terraform provider.
 
 | Path | Description |
 |------|-------------|
@@ -18,7 +18,7 @@ terraform init
 terraform plan
 ```
 
-For self-hosted or local FireWeave APIs:
+For self-hosted or local Fireweave APIs:
 
 ```bash
 export FIREWEAVE_ENDPOINT="http://localhost:3001"

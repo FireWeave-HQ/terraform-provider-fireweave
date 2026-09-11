@@ -70,7 +70,7 @@ func (r *EnvironmentResource) Metadata(_ context.Context, req resource.MetadataR
 
 func (r *EnvironmentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages a FireWeave project environment (deploy stage).",
+		MarkdownDescription: "Manages a Fireweave project environment (deploy stage).",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,

@@ -2,12 +2,12 @@
 page_title: "fireweave_project Data Source - fireweave"
 subcategory: ""
 description: |-
-  Looks up a single FireWeave project by id or slug.
+  Looks up a single Fireweave project by id or slug.
 ---
 
 # fireweave_project (Data Source)
 
-Looks up one FireWeave project. Provide either `id` or `slug`.
+Looks up one Fireweave project. Provide either `id` or `slug`.
 
 ## Example Usage
 

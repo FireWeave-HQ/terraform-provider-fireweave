@@ -23,7 +23,7 @@ resource "fireweave_org_member" "demo" {
 
 variable "organization_id" {
   type        = string
-  description = "FireWeave organisation identifier"
+  description = "Fireweave organisation identifier"
 }
 
 variable "user_id" {

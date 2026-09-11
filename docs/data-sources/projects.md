@@ -2,7 +2,7 @@
 page_title: "fireweave_projects Data Source - fireweave"
 subcategory: ""
 description: |-
-  Lists all FireWeave projects in the authenticated organisation.
+  Lists all Fireweave projects in the authenticated organisation.
 ---
 
 # fireweave_projects (Data Source)

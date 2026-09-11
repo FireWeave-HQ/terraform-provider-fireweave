@@ -41,7 +41,7 @@ func (r *ProjectResource) Metadata(_ context.Context, req resource.MetadataReque
 
 func (r *ProjectResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages a FireWeave project.",
+		MarkdownDescription: "Manages a Fireweave project.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
