@@ -34,7 +34,7 @@ resource "fireweave_org_member" "alice_admin" {
 ### Read-Only
 
 - `id` (String) Terraform identifier (`organization_id/user_id`).
-- `member_id` (String) Membership row identifier returned by FireWeave.
+- `member_id` (String) Membership row identifier returned by Fireweave.
 
 ## Import
 

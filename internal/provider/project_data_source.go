@@ -34,7 +34,7 @@ func (d *ProjectDataSource) Metadata(_ context.Context, req datasource.MetadataR
 
 func (d *ProjectDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Looks up a FireWeave project by `id` or `slug`.",
+		MarkdownDescription: "Looks up a Fireweave project by `id` or `slug`.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Optional:            true,

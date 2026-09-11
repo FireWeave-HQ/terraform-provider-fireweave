@@ -31,7 +31,7 @@ func (d *ProjectsDataSource) Metadata(_ context.Context, req datasource.Metadata
 
 func (d *ProjectsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Lists all FireWeave projects in the authenticated organisation.",
+		MarkdownDescription: "Lists all Fireweave projects in the authenticated organisation.",
 		Attributes: map[string]schema.Attribute{
 			"projects": schema.ListNestedAttribute{
 				Computed: true,

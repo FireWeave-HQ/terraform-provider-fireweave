@@ -1,10 +1,10 @@
-# Terraform Provider for FireWeave
+# Terraform Provider for Fireweave
 
 [![Terraform Registry](https://img.shields.io/badge/terraform-registry-623CE4?logo=terraform&logoColor=white)](https://registry.terraform.io/providers/FireWeave-HQ/fireweave/latest)
 [![GitHub release](https://img.shields.io/github/v/release/FireWeave-HQ/terraform-provider-fireweave)](https://github.com/FireWeave-HQ/terraform-provider-fireweave/releases)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](./LICENSE)
 
-Manage [FireWeave](https://fireweave.ai) projects and environments as code.
+Manage [Fireweave](https://fireweave.ai) projects and environments as code.
 
 **Registry:** [`FireWeave-HQ/fireweave`](https://registry.terraform.io/providers/FireWeave-HQ/fireweave/latest)
 
@@ -13,7 +13,7 @@ Manage [FireWeave](https://fireweave.ai) projects and environments as code.
 | Tool | Version |
 |------|---------|
 | [Terraform](https://developer.hashicorp.com/terraform/downloads) | >= 1.5 |
-| FireWeave org API key | `fw_org_…` (see [Authentication](#authentication)) |
+| Fireweave org API key | `fw_org_…` (see [Authentication](#authentication)) |
 
 ## Quick start
 
@@ -69,7 +69,7 @@ The provider authenticates with an **org-scoped API key** (`fw_org_…`).
 
 ### Creating an API key
 
-1. Sign in to the FireWeave app for your organisation.
+1. Sign in to the Fireweave app for your organisation.
 2. Create a key with a session-authenticated request:
 
 ```http
@@ -82,13 +82,13 @@ Content-Type: application/json
 3. Store the returned `key` value once — it is shown only at creation time.
 4. Export it as `FIREWEAVE_API_KEY` (or pass `api_key` in the provider block).
 
-> Org API key management is enabled when the FireWeave `org-api-keys-v1-management` feature flag is on for your organisation.
+> Org API key management is enabled when the Fireweave `org-api-keys-v1-management` feature flag is on for your organisation.
 
 ## Resources
 
 | Resource | Description |
 |----------|-------------|
-| [`fireweave_project`](docs/resources/project.md) | A FireWeave project |
+| [`fireweave_project`](docs/resources/project.md) | A Fireweave project |
 | [`fireweave_environment`](docs/resources/environment.md) | A deploy environment (promotion stage) in a project |
 | [`fireweave_org_member`](docs/resources/org_member.md) | Organisation member role assignment and removal |
 
@@ -122,7 +122,7 @@ go test ./...
 go build -o terraform-provider-fireweave .
 ```
 
-Acceptance tests (requires a running FireWeave API and a test key):
+Acceptance tests (requires a running Fireweave API and a test key):
 
 ```bash
 export TF_ACC=1
@@ -140,7 +140,7 @@ Signing material for operators lives under [`.release/`](./.release).
 ## Support
 
 - Issues: [GitHub Issues](https://github.com/FireWeave-HQ/terraform-provider-fireweave/issues)
-- FireWeave product: [fireweave.ai](https://fireweave.ai)
+- Fireweave product: [fireweave.ai](https://fireweave.ai)
 
 ## License
 

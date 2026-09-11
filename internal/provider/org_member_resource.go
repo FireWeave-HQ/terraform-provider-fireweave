@@ -76,7 +76,7 @@ func (r *OrgMemberResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 			},
 			"member_id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "Membership row identifier returned by FireWeave.",
+				MarkdownDescription: "Membership row identifier returned by Fireweave.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},

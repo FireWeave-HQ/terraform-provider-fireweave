@@ -25,7 +25,7 @@ data "fireweave_environments" "pipeline" {
 
 variable "project_slug" {
   type        = string
-  description = "Slug of an existing FireWeave project to inspect"
+  description = "Slug of an existing Fireweave project to inspect"
 }
 
 output "all_project_slugs" {

@@ -2,7 +2,7 @@
 page_title: "fireweave_environments Data Source - fireweave"
 subcategory: ""
 description: |-
-  Lists FireWeave environments for a project.
+  Lists Fireweave environments for a project.
 ---
 
 # fireweave_environments (Data Source)

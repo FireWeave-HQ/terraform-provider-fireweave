@@ -2,14 +2,14 @@
 page_title: "fireweave_environment Resource - fireweave"
 subcategory: ""
 description: |-
-  Manages a FireWeave project environment (deploy / promotion stage).
+  Manages a Fireweave project environment (deploy / promotion stage).
 ---
 
 # fireweave_environment (Resource)
 
-Manages a FireWeave **environment** — a named stage in a project's promotion pipeline (for example `dev`, `stage`, or `prod`).
+Manages a Fireweave **environment** — a named stage in a project's promotion pipeline (for example `dev`, `stage`, or `prod`).
 
-Environments can declare branch and tag matching rules so FireWeave can resolve which stage a git ref belongs to.
+Environments can declare branch and tag matching rules so Fireweave can resolve which stage a git ref belongs to.
 
 ## Example Usage
 
@@ -69,7 +69,7 @@ resource "fireweave_environment" "prod" {
 
 - `project_id` (String) ID of the owning project. Changing this forces a new resource.
 - `slug` (String) Environment slug, unique within the project (for example `stage`). Changing this forces a new resource.
-- `display_name` (String) Human-readable name shown in the FireWeave UI.
+- `display_name` (String) Human-readable name shown in the Fireweave UI.
 
 ### Optional
 
@@ -80,7 +80,7 @@ resource "fireweave_environment" "prod" {
 
 ### Read-Only
 
-- `id` (String) Environment identifier (`envId`) assigned by FireWeave.
+- `id` (String) Environment identifier (`envId`) assigned by Fireweave.
 
 ### Ref Rule
 

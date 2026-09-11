@@ -39,14 +39,14 @@ func (p *FireweaveProvider) Metadata(_ context.Context, _ provider.MetadataReque
 
 func (p *FireweaveProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The FireWeave provider manages projects and environments via the FireWeave control-plane `/v1` API using an org-scoped `fw_org_…` API key.",
+		MarkdownDescription: "The Fireweave provider manages projects and environments via the Fireweave control-plane `/v1` API using an org-scoped `fw_org_…` API key.",
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
-				MarkdownDescription: "FireWeave API endpoint (default `https://app-server.fireweave.ai`). Can also be set via `FIREWEAVE_ENDPOINT`.",
+				MarkdownDescription: "Fireweave API endpoint (default `https://app-server.fireweave.ai`). Can also be set via `FIREWEAVE_ENDPOINT`.",
 				Optional:            true,
 			},
 			"api_key": schema.StringAttribute{
-				MarkdownDescription: "Org-scoped FireWeave API key (`fw_org_…`). Can also be set via `FIREWEAVE_API_KEY`.",
+				MarkdownDescription: "Org-scoped Fireweave API key (`fw_org_…`). Can also be set via `FIREWEAVE_API_KEY`.",
 				Optional:            true,
 				Sensitive:           true,
 			},
@@ -77,7 +77,7 @@ func (p *FireweaveProvider) Configure(ctx context.Context, req provider.Configur
 	}
 	if apiKey == "" {
 		resp.Diagnostics.AddError(
-			"Missing FireWeave API key",
+			"Missing Fireweave API key",
 			"Set the provider `api_key` argument or the `FIREWEAVE_API_KEY` environment variable.",
 		)
 		return

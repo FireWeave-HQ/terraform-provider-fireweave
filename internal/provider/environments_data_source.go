@@ -32,7 +32,7 @@ func (d *EnvironmentsDataSource) Metadata(_ context.Context, req datasource.Meta
 
 func (d *EnvironmentsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Lists FireWeave environments for a project.",
+		MarkdownDescription: "Lists Fireweave environments for a project.",
 		Attributes: map[string]schema.Attribute{
 			"project_id": schema.StringAttribute{
 				Required:            true,
